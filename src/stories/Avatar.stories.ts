@@ -1,12 +1,10 @@
 import type {Meta, Preview, StoryObj} from '@storybook/vue3';
 import Avatar from '../components/avatars/Avatar.vue';
-import AvatarGroup from '../components/avatars/AvatarGroup.vue';
 
 import {colorsNormalArray, sizesNormalArray} from "@/constants/constants";
-import MyPage from "@/stories/Page.vue";
 
 const meta: Meta<typeof Avatar> = {
-  title: 'Avatar',
+  title: 'Components/Avatar',
   component: Avatar,
 
   tags: ['autodocs'],
