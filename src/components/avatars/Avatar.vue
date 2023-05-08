@@ -1,3 +1,4 @@
+<!-- Author: Dinh Vo-->
 <template>
   <span onclick="onClick" class="inline-block h-12 w-12  ring-2 ring-white overflow-hidden relative " :class="classes">
       <span class=" object-cover  bg-colors-gray600 w-full h-full absolute z-0 "></span>
@@ -34,7 +35,9 @@ const props = withDefaults(defineProps<{
   bordered: boolean,
 
   zoomed: boolean
-}>(), { });
+}>(), {
+  src: 'https://media.licdn.com/dms/image/D5603AQG-1BWAinjgdw/profile-displayphoto-shrink_800_800/0/1673344535335?e=1689206400&v=beta&t=CcsSxxq_a7s36XOYra9HwuErmZgg_1YN2c7ccOMQU_A'
+});
 const size={
   'xs': 'w-5 h-5 min-w-[1.25rem] min-h-[1.25rem]',
   'sm': 'w-7 h-7 min-w-[1.75rem] min-h-[1.75rem]',

@@ -1,24 +1,38 @@
 <!-- Author: Dinh Vo-->
 <template>
   <div class="input">
-    <div class="input__container" :class="inputContainerModifier">
-      <label class="input__placeholder" :class="inputPlaceholderModifier">{{label}}</label>
+    <div class="input__container" :class="{ relative: shouldAnimateLabel }">
+      <label class="input__placeholder"
+             :class="{ 'label-animation': shouldAnimateLabel,
+             'label-animation-out': shouldAnimateLabel && state.animateLabel,
+              [`text-${color}`] : true
+              }">{{label}}</label>
       <div class="input__wrapper">
         <input :type="type" :id="id" class="input__control"
-               :placeholder="labelAnimation ? '' : placeholder"
+               :placeholder="shouldAnimateLabel ? '' : placeholder"
                :disabled="disabled"
                :readonly="readOnly"
                :value="state.inputValue"
-               :class="inputControlModifier"
+               :class="{ underlined: underlined,
+                'bordered': bordered,
+               [`border-${color}`]: true,
+               [`bg-${status}`]:true,
+               [`text-${status}`] : true
+               }"
                @input="handleInput"
                @focus="handleAnimationLabel(true)"
                @blur="handleAnimationLabel(state.inputValue.length!==0)"
         >
-        <button class="input__clear-button" v-if="props.clearable" @click="handleClear">
+          <button class="input__clear-button" v-if="clearable" @click="handleClear">
           <span class="input__clear-icon">
             <x-circle/>
           </span>
-        </button>
+          </button>
+
+      </div>
+      <div class="input__helper-text">
+        <p class="text-xs pl-2"
+           :class="{[`text-${helperColor}`]: true}">{{helperText}}</p>
       </div>
     </div>
   </div>
@@ -27,6 +41,7 @@
 <script lang="ts" setup>
 import {computed, reactive} from "vue";
 import XCircle from "@/icons/XCircle.vue";
+import {NormalColors} from "@/constants/constants";
 
 const props = withDefaults(defineProps<{
   id: string,
@@ -45,9 +60,25 @@ const props = withDefaults(defineProps<{
 
   clearable:boolean,
 
-  labelAnimation: boolean,
+  shouldAnimateLabel: boolean,
 
-  type: 'text' | 'password'
+  type: 'text' | 'password',
+
+  bordered: boolean,
+
+  color: NormalColors,
+
+  status: NormalColors,
+
+  helperText: string,
+
+  helperColor: NormalColors,
+
+  onChange: (event: Event)=>{},
+
+  onFocus: (event: FocusEvent)=>{},
+
+  onBlur: (event: FocusEvent)=>{}
 }>(), {
   id: 'abcxyz-1',
   placeholder: 'Author Dinh Vo',
@@ -57,40 +88,37 @@ const props = withDefaults(defineProps<{
   label: 'Label',
   underlined: false,
   clearable: false,
-  labelAnimation: false,
-  type: 'text'
+  shouldAnimateLabel: false,
+  type: 'text',
+  bordered: false,
+  color: 'default',
+  status: 'default',
+  helperText: 'Author Dinh Vo',
+  helperColor: 'default'
 });
-
-const inputControlModifier=computed(()=>({
-  [`${props.underlined? 'underlined' : ''}`]:true
-}))
-
-const inputContainerModifier=computed(()=>({
-  [`${props.labelAnimation ? 'relative':''}`]:true
-}))
-
-const inputPlaceholderModifier=computed(()=>({
-  [`${props.labelAnimation ? 'label-animation':''}`]:true,
-  [`${props.labelAnimation && state.isAnimationLabel? 'label-animation-out': ''}`]:true
-}))
 
 //init state
 const state=reactive({
   inputValue: props.initialValue,
-  isAnimationLabel: false
+  animateLabel: false
 })
 
-function handleAnimationLabel(isAnimationLabel: boolean){
-  state.isAnimationLabel=isAnimationLabel
+function handleAnimationLabel(animateLabel: boolean){
+  state.animateLabel=animateLabel
+
 }
 
 function handleInput(event: Event){
   state.inputValue= (event.target as HTMLInputElement).value
+  props.onChange(event)
 }
 
 function handleClear(){
   state.inputValue=""
 }
+
+
+
 </script>
 
 <style scoped>
@@ -122,5 +150,60 @@ input:focus::placeholder {
 
 .label-animation-out{
   @apply top-[-50%] left-0
+}
+
+.bordered{
+  @apply border border-2 border-colors-gray600 duration-300
+}
+.input__container:hover .border-default{
+  @apply border-colors-gray600
+}
+.input__container:hover .border-primary{
+  @apply border-colors-blue600
+}
+.input__container:hover .border-secondary{
+  @apply border-colors-purple600
+}
+.input__container:hover .border-success{
+  @apply border-colors-green600
+}
+.input__container:hover .border-warning{
+  @apply border-colors-yellow600
+}
+.input__container:hover .border-error{
+  @apply border-colors-red600
+}
+
+
+.text-primary{
+  @apply text-colors-blue600
+}
+.text-secondary{
+  @apply text-colors-purple600
+}
+.text-success{
+  @apply text-colors-green600
+}
+.text-warning{
+  @apply text-colors-yellow600
+}
+.text-error{
+  @apply text-colors-red600
+}
+
+.bg-primary{
+  @apply bg-colors-blue600/30
+}
+.bg-secondary{
+  @apply bg-colors-purple600/30
+}
+.bg-success{
+  @apply bg-colors-green600/30
+}
+.bg-warning{
+  @apply bg-colors-yellow600/30
+}
+.bg-error{
+  @apply bg-colors-red600/30
 }
 </style>

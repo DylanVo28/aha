@@ -1,37 +1,41 @@
-function React(){
-  const hooks=[]
-  let index=0
-  function render(component){
-    index=0
-    return component()
+function findActive(nums){
+  let counts={}
+  for(let num of nums){
+    counts[num]=(counts[num] || 0)+1
   }
-  function useState(initialValue){
-    const indexHooks=index
-    hooks[indexHooks]=hooks[indexHooks] || initialValue
-    function setState(newVal){
-      hooks[indexHooks]=newVal
+  let n=nums.length
+  for(let num in counts){
+    if(counts[num]>n/2){
+      return num
+    }
+  }
+  return 0
+}
+
+function getMaxCouple(nums) {
+  let maxSum = -Infinity;
+  let maxCouple = "";
+  let maxNum = -Infinity;
+  let secondMaxNum = -Infinity;
+
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] > maxNum) {
+      secondMaxNum = maxNum;
+      maxNum = nums[i];
+    } else if (nums[i] > secondMaxNum) {
+      secondMaxNum = nums[i];
     }
 
-    index+=1
-
-    return [hooks[indexHooks],setState]
+    let sum = maxNum + secondMaxNum;
+    if (sum > maxSum) {
+      maxSum = sum;
+      maxCouple = `${maxNum} + ${secondMaxNum}`;
+    }
   }
-  return {
-    render,
-    useState,
 
-  }
+  return maxCouple;
 }
 
-const {render,useState}=React()
-function Component(){
-  const [value,setState]=useState(0)
-  const [value2,setState2]=useState(0)
+console.log(findActive([1,3,4,1,1]))
+console.log(getMaxCouple([1, 3, 5, 2, 0, 1, 7]))
 
-  console.log(value,value2)
-  setState(value+1)
-  setState2(value2+1)
-}
-render(Component)
-render(Component)
-render(Component)

@@ -8,7 +8,10 @@ const meta: Meta<typeof Input> = {
 
   tags: ['autodocs'],
   argTypes: {
-    type: {control: 'select', options: ['text','password']}
+    type: {control: 'select', options: ['text','password']},
+    color: {control: 'select', options: ['default','primary','secondary','success','warning','error','gradient']},
+    status: {control: 'select', options: ['default','primary','secondary','success','warning','error','gradient']},
+    helperColor: {control: 'select', options: ['default','primary','secondary','success','warning','error','gradient']}
   },
 };
 export default meta;

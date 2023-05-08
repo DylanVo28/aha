@@ -51,7 +51,7 @@
 
 <script lang="ts" setup>
 import './page.css';
-import MyHeader from './Header.vue';
+import MyHeader from '../headers/Header.vue';
 
 import { ref } from 'vue';
 
