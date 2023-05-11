@@ -13,11 +13,12 @@
                :disabled="disabled"
                :readonly="readOnly"
                :value="state.inputValue"
-               :class="{ underlined: underlined,
-                'bordered': bordered,
-               [`border-${color}`]: true,
-               [`bg-${status}`]:true,
-               [`text-${status}`] : true
+               :class="{
+                 underlined: underlined,
+                 'bordered': bordered,
+                 [`border-${color}`]: true,
+                 [`bg-${status}`]:true,
+                 [`text-${status}`] : true
                }"
                @input="handleInput"
                @focus="handleAnimationLabel(true)"
@@ -30,7 +31,7 @@
           </button>
 
       </div>
-      <div class="input__helper-text">
+      <div class="input__helper-text" v-if="helperText">
         <p class="text-xs pl-2"
            :class="{[`text-${helperColor}`]: true}">{{helperText}}</p>
       </div>
@@ -42,7 +43,7 @@
 import {computed, reactive} from "vue";
 import XCircle from "@/icons/XCircle.vue";
 import {NormalColors} from "@/constants/constants";
-
+import {debounce} from "lodash"
 const props = withDefaults(defineProps<{
   id: string,
 
@@ -74,11 +75,11 @@ const props = withDefaults(defineProps<{
 
   helperColor: NormalColors,
 
-  onChange: (event: Event)=>{},
+  onChange: (value: string)=>void,
 
-  onFocus: (event: FocusEvent)=>{},
+  onFocus: (value: string)=>void,
 
-  onBlur: (event: FocusEvent)=>{}
+  onBlur: (value: string)=>void,
 }>(), {
   id: 'abcxyz-1',
   placeholder: 'Author Dinh Vo',
@@ -94,7 +95,11 @@ const props = withDefaults(defineProps<{
   color: 'default',
   status: 'default',
   helperText: 'Author Dinh Vo',
-  helperColor: 'default'
+  helperColor: 'default',
+  onChange: (value: string)=>{},
+  onFocus: (value: string)=>{},
+  onBlur: (value: string)=>{}
+
 });
 
 //init state
@@ -105,13 +110,14 @@ const state=reactive({
 
 function handleAnimationLabel(animateLabel: boolean){
   state.animateLabel=animateLabel
-
 }
 
-function handleInput(event: Event){
+
+const handleInput= debounce((event: Event)=>{
   state.inputValue= (event.target as HTMLInputElement).value
-  props.onChange(event)
-}
+  props.onChange((event.target as HTMLInputElement).value)
+},1000)
+
 
 function handleClear(){
   state.inputValue=""
