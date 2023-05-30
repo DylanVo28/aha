@@ -1,0 +1,20 @@
+
+.shadow-primary
+  @apply shadow-lg shadow-colors-blue500
+
+.shadow-secondary
+  @apply shadow-lg shadow-colors-purple500
+
+.shadow-success
+  @apply shadow-lg shadow-colors-green500
+
+.shadow-warning
+  @apply shadow-lg shadow-colors-yellow500
+
+.shadow-error
+  @apply shadow-lg shadow-colors-red500
+
+.shadow-gradient
+  &:before
+    content: ''
+    @apply shadow-lg bg-gradient-to-r from-sky-500 to-indigo-500 blur-lg

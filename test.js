@@ -1,7 +1,12 @@
+function a(){
 
+  function b(){
+    return 5
+  }
 
-  const items=[1,2,3]
-items.forEach(async item=>{await console.log("helloo")
-  console.log(item)
-})
-console.log("hello")
+  return b()
+
+}
+let aa=a
+console.dir(aa)
+
